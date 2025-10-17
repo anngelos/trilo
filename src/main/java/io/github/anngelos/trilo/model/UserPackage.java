@@ -4,6 +4,7 @@ import io.github.anngelos.trilo.enums.PackageStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Entity
@@ -12,20 +13,30 @@ import java.util.UUID;
 public class UserPackage {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.UUID)
-  private UUID id;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-  @Column
-  private String trackId;
+  @Column(name = "track_code", nullable = false, unique = true)
+  private String trackCode;
 
   @Column
   private String description;
 
   @Column
+  private String sender;
+
+  @Column
+  private String receiver;
+
+  @Column(name = "created_at", updatable = false)
+  @org.hibernate.annotations.CreationTimestamp
+  private LocalDateTime createdAt;
+
+  @Column(nullable = false)
   @Enumerated(EnumType.STRING)
-  private PackageStatus status;
+  private PackageStatus status = PackageStatus.PENDING;
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "user_id")
+  @JoinColumn(name = "user_id", nullable = false)
   private User user;
 }

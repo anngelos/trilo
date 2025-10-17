@@ -1,6 +1,7 @@
 package io.github.anngelos.trilo.service;
 
 import io.github.anngelos.trilo.dto.UserRequestDTO;
+import io.github.anngelos.trilo.exception.UserNotFoundException;
 import io.github.anngelos.trilo.model.User;
 import io.github.anngelos.trilo.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,12 +24,27 @@ public class UserService {
   }
 
   public User getUserById(Long id) {
-    return userRepository.findById(id).orElseThrow(() -> new RuntimeException("Usuário de ID: " + id + " não encontrado."));
+    return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("Usuário de ID: " + id + " não encontrado."));
   }
 
-  // updateUser = atualiza o user com base no id
+  public User updateUser(Long id, UserRequestDTO dto) {
+    return userRepository.findById(id).map(existingUser -> {
+      if (dto.username() != null && !dto.username().isEmpty()) {
+        existingUser.setUsername(dto.username());
+      }
+
+      if (dto.password() != null && !dto.password().isEmpty()) {
+        existingUser.setPassword(passwordEncoder.encode(dto.password()));
+      }
+
+      return userRepository.save(existingUser);
+    }).orElseThrow(() -> new UserNotFoundException("Usuário de ID: " + id + " não encontrado."));
+  }
   
-  // deleteUser = deleta o usuario com base no id ou no proprio user mesmo n sei ainda
+  public void deleteUser(Long id) {
+    User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("Usuário de ID: " + id + " não encontrado."));
+    userRepository.delete(user);
+  }
 
   // login = faz o login do usuario gerando o jwt
 }
