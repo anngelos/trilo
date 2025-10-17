@@ -22,9 +22,13 @@ public class UserService {
     return userRepository.save(user);
   }
 
-  // updateUser = atualiza o user com base no id
+  public User getUserById(Long id) {
+    return userRepository.findById(id).orElseThrow(() -> new RuntimeException("Usuário de ID: " + id + " não encontrado."));
+  }
 
-  // getUserById = obter usuario pelo id dele
+  // updateUser = atualiza o user com base no id
   
   // deleteUser = deleta o usuario com base no id ou no proprio user mesmo n sei ainda
+
+  // login = faz o login do usuario gerando o jwt
 }
