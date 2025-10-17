@@ -1,18 +1,23 @@
 package io.github.anngelos.trilo.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
+
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 @Entity
 @Data
+@Builder
 @Table(name = "users")
 public class User {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.UUID)
-  private UUID id;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
   @Column(unique = true, length = 50)
   private String username;
@@ -21,5 +26,6 @@ public class User {
   private String password;
 
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-  private List<Package> packages;
+  @JsonIgnore
+  private List<UserPackage> packages = new ArrayList<>();
 }
