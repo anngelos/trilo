@@ -29,22 +29,14 @@ public class UserController {
 
   @GetMapping("/{id}")
   public ResponseEntity<User> getUserById(@PathVariable Long id) {
-    try {
-      User user = userService.getUserById(id);
-      return ResponseEntity.ok(user);
-    } catch (RuntimeException e) {
-      return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
-    }
+    User user = userService.getUserById(id);
+    return ResponseEntity.ok(user);
   }
 
   @PatchMapping("/{id}")
   public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody UserRequestDTO dto) {
-    try {
-      User updatedUser = userService.updateUser(id, dto);
-      return ResponseEntity.ok(updatedUser);
-    } catch (UserNotFoundException e) {
-      return ResponseEntity.notFound().build();
-    }
+    User updatedUser = userService.updateUser(id, dto);
+    return ResponseEntity.ok(updatedUser);
   }
 
   @DeleteMapping("/{id}")
