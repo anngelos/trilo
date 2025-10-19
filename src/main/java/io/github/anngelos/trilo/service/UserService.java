@@ -1,9 +1,12 @@
 package io.github.anngelos.trilo.service;
 
+import io.github.anngelos.trilo.dto.LoginRequestDTO;
+import io.github.anngelos.trilo.dto.LoginResponseDTO;
 import io.github.anngelos.trilo.dto.UserRequestDTO;
 import io.github.anngelos.trilo.exception.UserNotFoundException;
 import io.github.anngelos.trilo.model.User;
 import io.github.anngelos.trilo.repository.UserRepository;
+import io.github.anngelos.trilo.security.JwtUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -13,6 +16,7 @@ import org.springframework.stereotype.Service;
 public class UserService {
   private final UserRepository userRepository;
   private final PasswordEncoder passwordEncoder;
+  private final JwtUtil jwtUtil;
 
   public User createUser(UserRequestDTO dto) {
     User user = User.builder()
@@ -45,6 +49,4 @@ public class UserService {
     User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("Usuário de ID: " + id + " não encontrado."));
     userRepository.delete(user);
   }
-
-  // login = faz o login do usuario gerando o jwt
 }
