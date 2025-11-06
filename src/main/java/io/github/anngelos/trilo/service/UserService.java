@@ -3,6 +3,7 @@ package io.github.anngelos.trilo.service;
 import io.github.anngelos.trilo.dto.LoginRequestDTO;
 import io.github.anngelos.trilo.dto.LoginResponseDTO;
 import io.github.anngelos.trilo.dto.UserRequestDTO;
+import io.github.anngelos.trilo.enums.UserRole;
 import io.github.anngelos.trilo.exception.UserNotFoundException;
 import io.github.anngelos.trilo.model.User;
 import io.github.anngelos.trilo.repository.UserRepository;
@@ -22,6 +23,7 @@ public class UserService {
     User user = User.builder()
             .username(dto.username())
             .password(passwordEncoder.encode(dto.password()))
+            .role(dto.role() != null ? dto.role() : UserRole.USER)
             .build();
 
     return userRepository.save(user);

@@ -1,6 +1,7 @@
 package io.github.anngelos.trilo.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import io.github.anngelos.trilo.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -32,4 +33,8 @@ public class User {
   @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
   @JsonIgnore
   private List<UserPackage> packages = new ArrayList<>();
+
+  @Enumerated(EnumType.STRING)
+  @Column(nullable = false)
+  private UserRole role = UserRole.USER;
 }

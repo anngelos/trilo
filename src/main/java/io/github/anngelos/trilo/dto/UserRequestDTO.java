@@ -1,6 +1,7 @@
 package io.github.anngelos.trilo.dto;
 
+import io.github.anngelos.trilo.enums.UserRole;
 import io.github.anngelos.trilo.model.User;
 
-public record UserRequestDTO(String username, String password) {
+public record UserRequestDTO(String username, String password, UserRole role) {
 }

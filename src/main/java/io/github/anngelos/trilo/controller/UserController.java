@@ -9,6 +9,7 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -41,6 +42,7 @@ public class UserController {
 
   @DeleteMapping("/{id}")
   @Transactional
+  @PreAuthorize("hasAuthority('ADMIN')")
   public ResponseEntity<Object> deleteUser(@PathVariable Long id) {
     return userRepository.findById(id).map(user -> {
       userService.deleteUser(id);
